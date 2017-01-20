@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="ExtJS 6" type="javaScript">
+    <properties>
+      <option name="frameworkName" value="ExtJS 4.2" />
+      <option name="frameworkVersion" value="6.0" />
+    </properties>
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/portalApp/ext" />
+    </CLASSES>
+    <SOURCES />
+  </library>
+</component>
