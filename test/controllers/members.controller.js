@@ -1,12 +1,10 @@
 'use strict';
 
-const models = require('../models/index');
-const ModelHelper = require('../models/modelHelper');
-const Member = models.Member;
-const Helper = require('./controllerHelper');
+const models = require('../../src/models/index');
+const ModelHelper = require('../../src/models/modelHelper');
+const Helper = require('../../src/controllers/controllerHelper');
 const replyOk = Helper.replyOk;
 const replyError = Helper.replyError;
-
 
 const createJsonpScript = function (callback, total, data) {
     const jsonStr = JSON.stringify({total, data});
@@ -21,7 +19,8 @@ exports.findAll = function (req, reply) {
     const callback = query.callback || '';
     const sort = JSON.parse(query.sort || '[]');
 
-    Member
+    // Member
+    models.Member
         .findAndCountAll({
             where: {},
             limit: limit,

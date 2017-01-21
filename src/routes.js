@@ -1,7 +1,5 @@
 'use strict';
 
-const members = require('./controllers/members.controller');
-
 const routeDelete = function (server, path, handler, validate) {
     server.route({
         method: 'DELETE',
@@ -47,7 +45,11 @@ const routePut = function (server, path, handler, validate) {
 };
 
 const register = function (server) {
-    routeGet(server, '/api/members', members.findAll);
-    routeGet(server, '/api/members/sqlite', members.findAllSqlite);
+    // register routes
 };
+
+exports.routeDelete = routeDelete;
+exports.routeGet = routeGet;
+exports.routePost = routePost;
+exports.routePut = routePut;
 exports.register = register;

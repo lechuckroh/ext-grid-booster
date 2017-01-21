@@ -4,12 +4,23 @@ const Lab = require('lab');
 const lab = exports.lab = Lab.script();
 const Code = require('code');
 const expect = Code.expect;
+const fail = Code.fail;
 const server = require('../src/server');
-const models = require('../src/models/index');
+const routes = require('../src/routes')
 const ModelHelper = require('../src/models/modelHelper');
+const TestHelper = require('./testHelper');
+
+// add models for test
+const models = require('../src/models/index');
+models.scanDir(__dirname + '/models');
 const Member = models.Member;
 const Team = models.Team;
-const TestHelper = require('./testHelper');
+
+// register routes for test
+const members = require('./controllers/members.controller');
+routes.routeGet(server, '/api/members', members.findAll);
+routes.routeGet(server, '/api/members/sqlite', members.findAllSqlite);
+
 
 const newMember = function (i, teamId) {
     return {
@@ -27,10 +38,12 @@ const newTeam = function (i) {
     };
 };
 
+const json = obj => JSON.stringify(obj);
+
 lab.experiment("Members", () => {
     lab.before(done => {
         ModelHelper
-            .sync([Member, Team], {force: true})
+            .sync([Member, Team], { force: true })
             .then(() => done())
             .catch(err => done(err));
     });
@@ -67,11 +80,10 @@ lab.experiment("Members", () => {
                 total: members.length,
                 data: members.slice(start, start + limit)
             };
-            const expectedText =
-                `${callback}(${JSON.stringify(expectedData)});`;
+            const expectedText = `${callback}(${json(expectedData)});`;
 
             // send request
-            const query = TestHelper.toQueryStr({start, limit, callback});
+            const query = TestHelper.toQueryStr({ start, limit, callback });
             const options = {
                 method: 'GET',
                 url: `/api/members?${query}`
@@ -86,7 +98,7 @@ lab.experiment("Members", () => {
             });
         }).catch(err => {
             console.error(err.stack);
-            server.stop(done);
+            server.stop(done, () => fail(err.message));
         });
     });
 
@@ -94,7 +106,7 @@ lab.experiment("Members", () => {
         const memberCount = 10;
         const start = 2;
         const limit = 3;
-        const sort = JSON.stringify([{
+        const sort = json([{
             property: 'id',
             direction: 'ASC'
         }]);
@@ -131,11 +143,10 @@ lab.experiment("Members", () => {
                 total: members.length,
                 data: members.slice(start, start + limit)
             };
-            const expectedText =
-                `${callback}(${JSON.stringify(expectedData)});`;
+            const expectedText = `${callback}(${json(expectedData)});`;
 
             // send request
-            const query = TestHelper.toQueryStr({start, limit, sort, callback});
+            const query = TestHelper.toQueryStr({ start, limit, sort, callback });
             const options = {
                 method: 'GET',
                 url: `/api/members/sqlite?${query}`
@@ -150,7 +161,7 @@ lab.experiment("Members", () => {
             });
         }).catch(err => {
             console.error(err.stack);
-            server.stop(done);
+            server.stop(done, () => fail(err.message));
         });
     });
 });

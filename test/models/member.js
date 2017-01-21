@@ -1,6 +1,6 @@
 'use strict';
 
-const helper = require('./modelHelper');
+const helper = require('../../src/models/modelHelper');
 
 module.exports = function (sequelize, DataTypes) {
     const Member = sequelize.define("Member", {
