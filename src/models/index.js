@@ -18,25 +18,34 @@ cfg.define = {
 
 const sequelize = new Sequelize(cfg.database, cfg.username, cfg.password, cfg);
 
-fs.readdirSync(__dirname)
-    .filter(file => {
-        return (file.indexOf('.') !== 0) &&
-            (file !== basename) &&
-            (file.slice(-3) === '.js') &&
-            file !== 'modelHelper.js';
-    })
-    .forEach(file => {
-        const model = sequelize.import(path.join(__dirname, file));
-        db[model.name] = model;
-    });
+/**
+ * Scan models in the 'dir' directory.
+ */
+const scanDir = function (dir, excludes = []) {
+    fs.readdirSync(dir)
+        .filter(file => {
+            return (file.indexOf('.') !== 0) &&
+                (file !== basename) &&
+                (file.slice(-3) === '.js') &&
+                excludes.indexOf(file) < 0;
+        })
+        .forEach(file => {
+            const model = sequelize.import(path.join(dir, file));
+            db[model.name] = model;
+        });
 
-Object.keys(db).forEach(modelName => {
-    if (db[modelName].associate) {
-        db[modelName].associate(db);
-    }
-});
+    // associate relations
+    Object.keys(db).forEach(modelName => {
+        if (db[modelName].associate) {
+            db[modelName].associate(db);
+        }
+    });
+};
+
+scanDir(__dirname, ['modelHelper.js']);
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
+db.scanDir = scanDir;
 
 module.exports = db;
