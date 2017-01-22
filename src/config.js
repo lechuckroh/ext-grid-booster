@@ -12,8 +12,6 @@ if (!fs.existsSync(cfgPath)) {
 
     // Exit process with return code = 1
     console.log(`Configuration file created : ${cfgPath}`);
-    console.log('Edit configuration file and start again.');
-    process.exit(1);
 }
 
 const env = process.env.NODE_ENV || 'development';

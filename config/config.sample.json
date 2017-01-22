@@ -2,7 +2,7 @@
   "development": {
     "username": "root",
     "password": "root",
-    "database": "mysql",
+    "database": "ext-grid-booster",
     "host": "localhost",
     "dialect": "mariadb",
     "charset": "utf8",
