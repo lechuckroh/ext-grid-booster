@@ -1,5 +1,7 @@
 # Ext Grid Booster
 
+[![Build Status](https://travis-ci.org/lechuckroh/ext-grid-booster.svg?branch=master)](https://travis-ci.org/lechuckroh/ext-grid-booster)
+
 ExtJS Grid booster for huge dataset.
 
 This project is inspired by [ExtSpeeder](http://www.extspeeder.com/) (which provides full features including source code generation).
