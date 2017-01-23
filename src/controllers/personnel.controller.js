@@ -11,8 +11,7 @@ exports.findAll = function (req, reply) {
 /** Find all using custom queryBuilders */
 exports.findAllNative1 = function (req, reply) {
     const countBuilder = function () {
-        return `SELECT count(*)
-         FROM personnel p`;
+        return `SELECT count(*) FROM personnel p`;
     };
     const selectBuilder = function (options) {
         const orderBy = Helper.createOrderByQuery(options.sort);

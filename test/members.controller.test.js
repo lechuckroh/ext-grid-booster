@@ -43,7 +43,7 @@ const json = obj => JSON.stringify(obj);
 lab.experiment("Members", () => {
     lab.before(done => {
         ModelHelper
-            .sync([Member, Team], { force: true })
+            .sync([Member, Team], {force: true})
             .then(() => done())
             .catch(err => done(err));
     });
@@ -83,7 +83,7 @@ lab.experiment("Members", () => {
             const expectedText = `${callback}(${json(expectedData)});`;
 
             // send request
-            const query = TestHelper.toQueryStr({ start, limit, callback });
+            const query = TestHelper.toQueryStr({start, limit, callback});
             const options = {
                 method: 'GET',
                 url: `/api/members?${query}`
@@ -146,7 +146,7 @@ lab.experiment("Members", () => {
             const expectedText = `${callback}(${json(expectedData)});`;
 
             // send request
-            const query = TestHelper.toQueryStr({ start, limit, sort, callback });
+            const query = TestHelper.toQueryStr({start, limit, sort, callback});
             const options = {
                 method: 'GET',
                 url: `/api/members/sqlite?${query}`

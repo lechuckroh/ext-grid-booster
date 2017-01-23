@@ -14,7 +14,7 @@ exports.decodeBase64 = function (str) {
     new Buffer(str, 'base64').toString('ascii');
 };
 
-exports.trim = function(str) {
+exports.trim = function (str) {
     return String(str).replace(/^\s+|\s+$/g, '');
 };
 

@@ -12,13 +12,15 @@ const logResponse = function (res) {
         ].join(', '));
 };
 
+const fromJson = s => JSON.parse(s);
+const toJson = obj => JSON.stringify(obj);
 
 const replyJson = function (reply, obj, statusCode) {
     if (statusCode) {
         // TODO: apply statusCode
-        reply(JSON.stringify(obj));
+        reply(toJson(obj));
     } else {
-        reply(JSON.stringify(obj));
+        reply(toJson(obj));
     }
 };
 
@@ -39,7 +41,7 @@ const replyError = function (reply, err) {
 };
 
 const createJsonpScript = function (callback, total, data) {
-    const jsonStr = JSON.stringify({total, data});
+    const jsonStr = toJson({total, data});
     return `${callback}(${jsonStr});`;
 };
 
@@ -49,7 +51,7 @@ const findAll = function (req, reply, model, where = {}) {
     const start = parseInt(query.start || '0');
     const limit = parseInt(query.limit || '100');
     const callback = query.callback || '';
-    const sort = JSON.parse(query.sort || '[]');
+    const sort = fromJson(query.sort || '[]');
 
     model.findAndCountAll({
         where,
@@ -65,7 +67,7 @@ const findAll = function (req, reply, model, where = {}) {
 };
 
 
-const createOrderByQuery = function(sortOptions) {
+const createOrderByQuery = function (sortOptions) {
     if (!sortOptions) {
         return '';
     }
@@ -77,7 +79,7 @@ const createOrderByQuery = function(sortOptions) {
     return str ? `ORDER BY ${str}` : '';
 };
 
-const createLimitQuery = function(start, limit) {
+const createLimitQuery = function (start, limit) {
     const dialect = config.dialect;
     switch ((dialect || '').toLowerCase()) {
         case 'mysql':
@@ -100,7 +102,7 @@ const findNative = function (req,
     const start = parseInt(query.start || '0');
     const limit = parseInt(query.limit || '100');
     const callback = query.callback || '';
-    const sort = JSON.parse(query.sort || '[]');
+    const sort = fromJson(query.sort || '[]');
 
     const countQuery = countQueryBuilder();
     const selectQuery = selectQueryBuilder({
@@ -127,19 +129,19 @@ const findNative = function (req,
         .catch(err => replyError(reply, err));
 };
 
-const getQueryBuilders = function(parts) {
+const getQueryBuilders = function (parts) {
     const columnPart = parts.columns;
     const fromPart = parts.from;
     const wherePart = parts.where;
 
-    const countQueryBuilder = function() {
+    const countQueryBuilder = function () {
         return [
             'SELECT count(*)',
             `FROM ${fromPart}`,
             wherePart ? `WHERE ${wherePart}` : ''
         ].join(' ');
     };
-    const selectQueryBuilder = function(options) {
+    const selectQueryBuilder = function (options) {
         const orderBy = createOrderByQuery(options.sort);
         const limit = createLimitQuery(options.start, options.limit);
         return [
