@@ -14,8 +14,8 @@ const createJsonpScript = function (callback, total, data) {
 /** Find all members */
 exports.findAll = function (req, reply) {
     const query = req.query;
-    const start = query.start || 0;
-    const limit = query.limit || 100;
+    const start = parseInt(query.start || '0');
+    const limit = parseInt(query.limit || '100');
     const callback = query.callback || '';
     const sort = JSON.parse(query.sort || '[]');
 
@@ -39,8 +39,8 @@ exports.findAll = function (req, reply) {
 /** Find all members using sqlite native query */
 exports.findAllSqlite = function (req, reply) {
     const query = req.query;
-    const start = query.start || 0;
-    const limit = query.limit || 100;
+    const start = parseInt(query.start || '0');
+    const limit = parseInt(query.limit || '100');
     const callback = query.callback || '';
     const sort = JSON.parse(query.sort || '[]');
 
