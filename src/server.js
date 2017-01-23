@@ -1,24 +1,54 @@
 'use strict';
 
-const Path = require('path');
+const path = require('path');
 const Hapi = require('hapi');
 const Inert = require('inert');
 const routes = require('./routes');
+const config = require('./config');
+
+
+/**
+ * Get htdocs directory from configuration file
+ */
+const getHtdocs = function () {
+    const htdocs = config['htdocs'];
+    if (htdocs) {
+        if (path.isAbsolute(htdocs)) {
+            return htdocs;
+        } else {
+            return path.join(__dirname, '..', htdocs);
+        }
+    } else {
+        return path.join(__dirname, '../htdocs');
+    }
+};
+
+const getPort = function () {
+    const port = config['port'];
+    return port ? port : 9990;
+};
+
 
 // Http Server
+const htdocs = getHtdocs();
+const port = getPort();
+
 const server = new Hapi.Server({
     connections: {
         routes: {
             files: {
-                relativeTo: Path.join(__dirname, '../htdocs')
+                relativeTo: htdocs
             }
         }
     }
 });
 
-server.connection({port: 9990});
+server.connection({port});
 server.register(Inert, () => {
 });
+
+console.log(`Static files directory : ${htdocs}`);
+console.log(`Service port : ${port}`);
 
 server.route({
     method: 'GET',

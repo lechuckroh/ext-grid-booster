@@ -1,24 +1,28 @@
 {
-  "development": {
-    "username": "root",
-    "password": "root",
-    "database": "ext-grid-booster",
-    "host": "localhost",
-    "dialect": "mariadb",
-    "charset": "utf8",
-    "collate": "utf8_general_ci"
-  },
-  "test": {
-    "storage": ":memory:",
-    "dialect": "sqlite"
-  },
-  "production": {
-    "username": "USERNAME",
-    "password": "PASSWORD",
-    "database": "DATABASE",
-    "host": "IP-ADDRESS",
-    "dialect": "mysql",
-    "charset": "utf8",
-    "collate": "utf8_general_ci"
-  }
+    "default": {
+        "port": 9990,
+        "htdocs": "./htdocs"
+    },
+    "development": {
+        "username": "root",
+        "password": "root",
+        "database": "ext-grid-booster",
+        "host": "localhost",
+        "dialect": "mariadb",
+        "charset": "utf8",
+        "collate": "utf8_general_ci"
+    },
+    "test": {
+        "storage": ":memory:",
+        "dialect": "sqlite"
+    },
+    "production": {
+        "username": "USERNAME",
+        "password": "PASSWORD",
+        "database": "DATABASE",
+        "host": "IP-ADDRESS",
+        "dialect": "mysql",
+        "charset": "utf8",
+        "collate": "utf8_general_ci"
+    }
 }

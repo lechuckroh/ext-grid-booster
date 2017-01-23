@@ -1,5 +1,6 @@
 'use strict';
 
+const _ = require('lodash');
 const fs = require('fs-extra');
 const path = require('path');
 
@@ -10,11 +11,15 @@ if (!fs.existsSync(cfgPath)) {
     const sampleCfgPath = path.join(__dirname, '../config/config.sample.json');
     fs.copySync(sampleCfgPath, cfgPath);
 
-    // Exit process with return code = 1
     console.log(`Configuration file created : ${cfgPath}`);
 }
 
+const config = require(cfgPath);
 const env = process.env.NODE_ENV || 'development';
-const config = require(cfgPath)[env];
+const defaultConfig = config['default'];
+const activeConfig = config[env];
 
-module.exports = config;
+// overwrite activeConfig settings in defaultConfig
+_.defaultsDeep(activeConfig, defaultConfig);
+
+module.exports = activeConfig;
