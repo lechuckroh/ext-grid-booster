@@ -19,7 +19,7 @@ const Team = models.Team;
 // register routes for test
 const members = require('./controllers/members.controller');
 routes.routeGet(server, '/api/members', members.findAll);
-routes.routeGet(server, '/api/members/sqlite', members.findAllSqlite);
+routes.routeGet(server, '/api/members/sqlite', members.findAllNative);
 
 
 const newMember = function (i, teamId) {

@@ -12,11 +12,11 @@ If you no longer need this model, you can remove it.
 // populate sample data
 require('./controllers/personnel.controller').populateSampleData();
 ```
-4. Open `src/routes.js` and remove the following lines.
+4. Open `src/routes.js` and remove the following line.
 ```javascript
 const personnel = require('./controllers/personnel.controller');
-routeGet(server, '/api/personnel', personnel.findAll);
 ```
+5. Open `src/routes.js` and remove lines inside `register` function.
 
 ## API using native query
 

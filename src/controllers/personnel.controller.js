@@ -2,36 +2,40 @@
 
 const models = require('../../src/models/index');
 const Helper = require('../../src/controllers/controllerHelper');
-const replyOk = Helper.replyOk;
-const replyError = Helper.replyError;
 
-const createJsonpScript = function (callback, total, data) {
-    const jsonStr = JSON.stringify({total, data});
-    return `${callback}(${jsonStr});`;
+/** Find all using ORM model */
+exports.findAll = function (req, reply) {
+    Helper.findAll(req, reply, models.Personnel);
 };
 
-/** Find all */
-exports.findAll = function (req, reply) {
-    const query = req.query;
-    const start = parseInt(query.start || '0');
-    const limit = parseInt(query.limit || '100');
-    const callback = query.callback || '';
-    const sort = JSON.parse(query.sort || '[]');
+/** Find all using custom queryBuilders */
+exports.findAllNative1 = function (req, reply) {
+    const countBuilder = function () {
+        return `SELECT count(*)
+         FROM personnel p`;
+    };
+    const selectBuilder = function (options) {
+        const orderBy = Helper.createOrderByQuery(options.sort);
+        const limit = Helper.createLimitQuery(options.start, options.limit);
+        return [
+            `SELECT id, name, email, phone FROM personnel`,
+            orderBy,
+            limit
+        ].join(' ');
+    };
 
-    models.Personnel
-        .findAndCountAll({
-            where: {},
-            limit: limit,
-            offset: start,
-            order: sort.map(o => `${o.property} ${o.direction}`).join(',')
-        })
-        .then(result => {
-            const script = createJsonpScript(callback,
-                result.count,
-                result.rows.map(row => row.dataValues));
-            replyOk(reply, script);
-        })
-        .catch(err => replyError(reply, err));
+    Helper.findNative(req, reply, selectBuilder, countBuilder);
+};
+
+/** Find all using predefined queryBuilders */
+exports.findAllNative2 = function (req, reply) {
+    const builders = Helper.getQueryBuilders({
+        columns: 'id, name, email, phone',
+        from: 'personnel',
+        where: ''
+    });
+
+    Helper.findNative(req, reply, builders.select, builders.count);
 };
 
 // Populate sample data
