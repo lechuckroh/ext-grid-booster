@@ -3,6 +3,7 @@
 /.idea/workspace.xml
 /config/config.json
 /dist
+/htdocs/myapp
 /node_modules
 /output
 /yarn.lock

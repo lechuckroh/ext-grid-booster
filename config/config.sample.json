@@ -4,13 +4,8 @@
         "htdocs": "./htdocs"
     },
     "development": {
-        "username": "root",
-        "password": "root",
-        "database": "ext-grid-booster",
-        "host": "localhost",
-        "dialect": "mariadb",
-        "charset": "utf8",
-        "collate": "utf8_general_ci"
+        "storage": ":memory:",
+        "dialect": "sqlite"
     },
     "test": {
         "storage": ":memory:",

@@ -6,38 +6,39 @@ ExtJS Grid booster for huge dataset.
 
 This project is inspired by [ExtSpeeder](http://www.extspeeder.com/) (which provides full features including source code generation).
 
+#### How-to
+* [Configuration](docs/configuration.md)
+* [Creating demo application](docs/demoapp.md)
+* [Customization](docs/customization.md)
+
 ## Requirements
-* node.js v5.0+
+* node.js v7.0+
 * [yarn](https://yarnpkg.com/) (Optional)
 
 All the command lines are based on `yarn`.
 If you have not installed `yarn`, you can use `npm` instead.
 
-## Install modules
-```bash
-$ yarn install
-```
+## Commands
 
-## Test
 ```bash
+# install modules
+$ yarn install
+
 # run test
-$ yarn test
+$ yarm test
 
 # generate coverage report to 'output/coverage.html'
 $ yarn htmlcov
+
+# start server
+$ yarn start
 ```
 
 ## Configuration
 1. Copy `config/config.sample.json` to `config/config.json` file.
-2. Edit `config/config.json` file.
-    * `development` : for development
-    * `test` : for unit test
-    * `production` : for production operation
+2. Edit `config/config.json` file
 
-## Run
-```bash
-$ yarn start
-```
+See [Customization](docs/customization.md) for more details.
 
 ## References
 * [Lab](https://github.com/hapijs/lab) : Node Test Utility

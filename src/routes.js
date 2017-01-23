@@ -1,5 +1,7 @@
 'use strict';
 
+const personnel = require('./controllers/personnel.controller');
+
 const routeDelete = function (server, path, handler, validate) {
     server.route({
         method: 'DELETE',
@@ -45,7 +47,7 @@ const routePut = function (server, path, handler, validate) {
 };
 
 const register = function (server) {
-    // register routes
+    routeGet(server, '/api/personnel', personnel.findAll);
 };
 
 exports.routeDelete = routeDelete;

@@ -12,6 +12,9 @@ sequelize.sync().then(() => {
     console.error('Failed to synchronize database : ', e.stack);
 });
 
+// populate sample data
+require('./controllers/personnel.controller').populateSampleData();
+
 // Start HTTP server
 server.start(err => {
     if (err) {

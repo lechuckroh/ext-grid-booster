@@ -6,7 +6,7 @@ const Code = require('code');
 const expect = Code.expect;
 const fail = Code.fail;
 const server = require('../src/server');
-const routes = require('../src/routes')
+const routes = require('../src/routes');
 const ModelHelper = require('../src/models/modelHelper');
 const TestHelper = require('./testHelper');
 
