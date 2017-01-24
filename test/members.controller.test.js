@@ -6,7 +6,7 @@ const Code = require('code');
 const expect = Code.expect;
 const fail = Code.fail;
 const config = require('../src/config');
-const server = require('../src/server');
+const server = require('../src/server').httpServer;
 const routes = require('../src/routes');
 const ModelHelper = require('../src/models/modelHelper');
 const TestHelper = require('./testHelper');
@@ -19,8 +19,8 @@ const Team = models.Team;
 
 // register routes for test
 const members = require('./controllers/members.controller');
-routes.routeGet(server, '/api/members', members.findAll);
-routes.routeGet(server, '/api/members/sqlite', members.findAllNative);
+routes.routeGet(server, '/api/members', members.select);
+routes.routeGet(server, '/api/members/sqlite', members.selectNative);
 
 
 const newMember = function (i, teamId) {

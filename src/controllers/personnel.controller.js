@@ -7,12 +7,12 @@ const Helper = require('../../src/controllers/controllerHelper');
 const logging = !!config['queryLogging'];
 
 /** Find all using ORM model */
-exports.findAll = function (req, reply) {
-    Helper.findAll(req, reply, models.Personnel);
+exports.selectORM = function (req, reply) {
+    Helper.select(req, reply, models.Personnel);
 };
 
 /** Find all using custom queryBuilders */
-exports.findAllNative1 = function (req, reply) {
+exports.selectNative1 = function (req, reply) {
     const countBuilder = function () {
         return `SELECT count(*) FROM personnel p`;
     };
@@ -26,18 +26,18 @@ exports.findAllNative1 = function (req, reply) {
         ].join(' ');
     };
 
-    Helper.findNative(req, reply, selectBuilder, countBuilder);
+    Helper.selectNative(req, reply, selectBuilder, countBuilder);
 };
 
 /** Find all using predefined queryBuilders */
-exports.findAllNative2 = function (req, reply) {
+exports.selectNative2 = function (req, reply) {
     const builders = Helper.getQueryBuilders({
         columns: 'id, name, email, phone',
         from: 'personnel',
         where: ''
     });
 
-    Helper.findNative(req, reply, builders.select, builders.count);
+    Helper.selectNative(req, reply, builders.select, builders.count);
 };
 
 // Populate sample data
@@ -77,7 +77,7 @@ exports.populateSampleData = function () {
                 };
                 list.push(obj);
             }
-            promises.push(Personnel.bulkCreate(list, {logging: false}));
+            promises.push(Personnel.bulkCreate(list, {logging}));
         }
 
         console.log('Personnel populating...');

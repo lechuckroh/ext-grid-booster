@@ -4,12 +4,12 @@ const models = require('../../src/models/index');
 const Helper = require('../../src/controllers/controllerHelper');
 
 /** Find all members */
-exports.findAll = function (req, reply) {
-    Helper.findAll(req, reply, models.Member);
+exports.select = function (req, reply) {
+    Helper.select(req, reply, models.Member);
 };
 
 /** Find all members using sqlite native query */
-exports.findAllNative = function (req, reply) {
+exports.selectNative = function (req, reply) {
     const countBuilder = function () {
         return `SELECT count(*)
          FROM member m, team t
@@ -27,5 +27,5 @@ exports.findAllNative = function (req, reply) {
         ].join(' ');
     };
 
-    Helper.findNative(req, reply, selectBuilder, countBuilder);
+    Helper.selectNative(req, reply, selectBuilder, countBuilder);
 };

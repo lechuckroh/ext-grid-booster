@@ -48,7 +48,7 @@ const createJsonpScript = function (callback, total, data) {
 };
 
 
-const findAll = function (req, reply, model, where = {}) {
+const select = function (req, reply, model, where = {}) {
     const query = req.query;
     const start = parseInt(query.start || '0');
     const limit = parseInt(query.limit || '100');
@@ -97,10 +97,10 @@ const createLimitQuery = function (start, limit) {
     }
 };
 
-const findNative = function (req,
-                             reply,
-                             selectQueryBuilder,
-                             countQueryBuilder) {
+const selectNative = function (req,
+                               reply,
+                               selectQueryBuilder,
+                               countQueryBuilder) {
     const query = req.query;
     const start = parseInt(query.start || '0');
     const limit = parseInt(query.limit || '100');
@@ -173,6 +173,6 @@ exports.replyError = replyError;
 exports.createJsonpScript = createJsonpScript;
 exports.createOrderByQuery = createOrderByQuery;
 exports.createLimitQuery = createLimitQuery;
-exports.findAll = findAll;
-exports.findNative = findNative;
+exports.select = select;
+exports.selectNative = selectNative;
 exports.getQueryBuilders = getQueryBuilders;

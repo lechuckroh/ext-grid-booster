@@ -47,9 +47,9 @@ const routePut = function (server, path, handler, validate) {
 };
 
 const register = function (server) {
-    routeGet(server, '/api/personnel', personnel.findAll);
-    routeGet(server, '/api/personnel/native1', personnel.findAllNative1);
-    routeGet(server, '/api/personnel/native2', personnel.findAllNative2);
+    routeGet(server, '/api/personnel/orm', personnel.selectORM);
+    routeGet(server, '/api/personnel/native1', personnel.selectNative1);
+    routeGet(server, '/api/personnel/native2', personnel.selectNative2);
 };
 
 exports.routeDelete = routeDelete;

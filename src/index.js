@@ -1,6 +1,7 @@
 'use strict';
 
-const server = require('./server');
+const Server = require('./server');
+const httpServer = Server.httpServer;
 const models = require('./models/index.js');
 const sequelize = models.sequelize;
 
@@ -16,10 +17,10 @@ sequelize.sync().then(() => {
 require('./controllers/personnel.controller').populateSampleData();
 
 // Start HTTP server
-server.start(err => {
+httpServer.start(err => {
     if (err) {
         throw err;
     }
-    console.log(`Server running at: ${server.info.uri}`);
+    console.log(`Server running at: ${httpServer.info.uri}`);
 });
 

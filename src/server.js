@@ -5,6 +5,7 @@ const Hapi = require('hapi');
 const Inert = require('inert');
 const routes = require('./routes');
 const config = require('./config');
+const CacheManager = require('./cache/cacheManager');
 
 
 const getConfig = function(property) {
@@ -37,7 +38,7 @@ const getPort = function () {
 const htdocs = getHtdocs();
 const port = getPort();
 
-const server = new Hapi.Server({
+const httpServer = new Hapi.Server({
     connections: {
         routes: {
             files: {
@@ -47,14 +48,14 @@ const server = new Hapi.Server({
     }
 });
 
-server.connection({port});
-server.register(Inert, () => {
+httpServer.connection({port});
+httpServer.register(Inert, () => {
 });
 
 console.log(`Static files directory : ${htdocs}`);
 console.log(`Service port : ${port}`);
 
-server.route({
+httpServer.route({
     method: 'GET',
     path: '/{param*}',
     handler: {
@@ -66,6 +67,11 @@ server.route({
     }
 });
 
-routes.register(server);
+routes.register(httpServer);
 
-module.exports = server;
+// CacheManager
+const cacheManager = new CacheManager();
+
+// Exports
+exports.httpServer = httpServer;
+exports.cacheManager = cacheManager;
