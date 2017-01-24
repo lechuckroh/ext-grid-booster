@@ -4,6 +4,7 @@ class Cache {
         this._options = options;
         this._dataList = dataList;
         this._sortOptions = [];
+        this._lastAccessTime = Date.now();
     }
 
     get cacheId() {
@@ -22,9 +23,19 @@ class Cache {
         return this._sortOptions;
     }
 
+    get lastAccessTime() {
+        return this._lastAccessTime;
+    }
+
+    clear() {
+        this._dataList = [];
+    }
+
     getData(start, limit) {
         const total = this._dataList.length;
         const data = this._dataList.slice(start, start + limit);
+
+        this._lastAccessTime = Date.now();
 
         return {total, data};
     }
