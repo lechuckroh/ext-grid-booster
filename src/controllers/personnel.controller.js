@@ -1,7 +1,10 @@
 'use strict';
 
+const config = require('../config');
 const models = require('../../src/models/index');
 const Helper = require('../../src/controllers/controllerHelper');
+
+const logging = !!config['queryLogging'];
 
 /** Find all using ORM model */
 exports.findAll = function (req, reply) {
@@ -60,7 +63,7 @@ exports.populateSampleData = function () {
     const bulkSize = 100;
     const Personnel = models.Personnel;
 
-    Personnel.sync({force: true}).then(() => {
+    Personnel.sync({force: true, logging}).then(() => {
         console.log('Personnel synchronized.');
 
         const promises = [];

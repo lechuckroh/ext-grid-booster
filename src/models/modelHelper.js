@@ -1,5 +1,6 @@
 'use strict';
 
+const _ = require('lodash');
 const toSnake = require('../util/StringUtils').camelCaseToSnakeCase;
 
 exports.STRING = function (DataTypes, fieldName, length, options) {
@@ -86,6 +87,7 @@ exports.sync = function (models, option) {
     return Promise.all(models.map(model => model.sync(option)));
 };
 
-exports.deleteAll = function (models) {
-    return Promise.all(models.map(model => model.destroy({where: {}})));
+exports.deleteAll = function (models, options) {
+    const opt = _.defaultsDeep({where: {}}, options);
+    return Promise.all(models.map(model => model.destroy(opt)));
 };

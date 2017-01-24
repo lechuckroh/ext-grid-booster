@@ -4,6 +4,8 @@ const Boom = require('boom');
 const config = require('../config');
 const sequelize = require('../models/index').sequelize;
 
+const queryLogging = !!config['queryLogging'];
+
 const logResponse = function (res) {
     console.log('Response: ' + [
             `statusCode = ${res.statusCode}`,
@@ -57,7 +59,8 @@ const findAll = function (req, reply, model, where = {}) {
         where,
         limit,
         offset: start,
-        order: sort.map(o => `${o.property} ${o.direction}`).join(',')
+        order: sort.map(o => `${o.property} ${o.direction}`).join(','),
+        logging: queryLogging
     }).then(result => {
         const script = createJsonpScript(callback,
             result.count,
@@ -112,14 +115,16 @@ const findNative = function (req,
     let total = 0;
     sequelize
         .query(countQuery, {
-            type: sequelize.QueryTypes.SELECT
+            type: sequelize.QueryTypes.SELECT,
+            logging: queryLogging
         })
         .then(rows => {
             const firstRow = rows[0];
             const key = Object.keys(firstRow)[0];
             total = firstRow[key];
             return sequelize.query(selectQuery, {
-                type: sequelize.QueryTypes.SELECT
+                type: sequelize.QueryTypes.SELECT,
+                logging: queryLogging
             })
         })
         .then(rows => {

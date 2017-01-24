@@ -55,6 +55,7 @@ If a setting is not found in the profile setting, default setting will be used.
     * `postgres`
     * `sqlite`
     * `mssql`
+* `queryLogging` : Boolean flag to display query or not.
 
 #### sqlite
 * `storage`: storage filename. Defaults to `:memory:` which is in-memory DB.

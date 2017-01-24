@@ -5,6 +5,7 @@ const lab = exports.lab = Lab.script();
 const Code = require('code');
 const expect = Code.expect;
 const fail = Code.fail;
+const config = require('../src/config');
 const server = require('../src/server');
 const routes = require('../src/routes');
 const ModelHelper = require('../src/models/modelHelper');
@@ -39,18 +40,19 @@ const newTeam = function (i) {
 };
 
 const json = obj => JSON.stringify(obj);
+const logging = !!config['queryLogging'];
 
 lab.experiment("Members", () => {
     lab.before(done => {
         ModelHelper
-            .sync([Member, Team], {force: true})
+            .sync([Member, Team], {force: true, logging})
             .then(() => done())
             .catch(err => done(err));
     });
 
     lab.beforeEach(done => {
         ModelHelper
-            .deleteAll([Member, Team])
+            .deleteAll([Member, Team], {logging})
             .then(() => done())
             .catch(err => done(err));
     });
@@ -63,17 +65,17 @@ lab.experiment("Members", () => {
         const callback = 'cb';
 
         // add Team
-        Team.create(newTeam(1)).then(team => {
+        Team.create(newTeam(1), {logging}).then(team => {
             // add Members
             const members = [];
             for (let i = 1; i <= memberCount; i++) {
                 members.push(newMember(i, team.id));
             }
 
-            return Member.bulkCreate(members);
+            return Member.bulkCreate(members, {logging});
         }).then(() => {
             // get inserted members
-            return Member.findAll();
+            return Member.findAll({logging});
         }).then(members => {
             // expected text
             const expectedData = {
@@ -91,7 +93,9 @@ lab.experiment("Members", () => {
 
             server.inject(options, res => {
                 // test
-                TestHelper.logResponse(res);
+                if (logging) {
+                    TestHelper.logResponse(res);
+                }
                 expect(res.statusCode).to.equal(200);
                 expect(res.result).to.equal(expectedText);
                 done();
@@ -115,7 +119,7 @@ lab.experiment("Members", () => {
         let team = null;
 
         // add Team
-        Team.create(newTeam(1)).then(t => {
+        Team.create(newTeam(1), {logging}).then(t => {
             // add Members
             const members = [];
             team = t;
@@ -123,10 +127,10 @@ lab.experiment("Members", () => {
                 members.push(newMember(i, t.id));
             }
 
-            return Member.bulkCreate(members);
+            return Member.bulkCreate(members, {logging});
         }).then(() => {
             // get inserted members
-            return Member.findAll();
+            return Member.findAll({logging});
         }).then(rows => {
             // transform Member
             // - add teamName
@@ -154,7 +158,9 @@ lab.experiment("Members", () => {
 
             server.inject(options, res => {
                 // test
-                TestHelper.logResponse(res);
+                if (logging) {
+                    TestHelper.logResponse(res);
+                }
                 expect(res.statusCode).to.equal(200);
                 expect(res.result).to.equal(expectedText);
                 done();

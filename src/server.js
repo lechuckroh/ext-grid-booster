@@ -7,11 +7,15 @@ const routes = require('./routes');
 const config = require('./config');
 
 
+const getConfig = function(property) {
+    return config[property];
+};
+
 /**
  * Get htdocs directory from configuration file
  */
 const getHtdocs = function () {
-    const htdocs = config['htdocs'];
+    const htdocs = getConfig('htdocs');
     if (htdocs) {
         if (path.isAbsolute(htdocs)) {
             return htdocs;
@@ -24,7 +28,7 @@ const getHtdocs = function () {
 };
 
 const getPort = function () {
-    const port = config['port'];
+    const port = getConfig('port');
     return port ? port : 9990;
 };
 

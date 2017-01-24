@@ -1,7 +1,8 @@
 {
     "default": {
         "port": 9990,
-        "htdocs": "./htdocs"
+        "htdocs": "./htdocs",
+        "queryLogging": false
     },
     "development": {
         "storage": ":memory:",

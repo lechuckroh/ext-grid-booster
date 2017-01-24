@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/index.js",
-    "test": "lab --coverage --colors",
+    "test": "lab --colors",
+    "testcov": "lab --coverage --colors",
     "htmlcov": "lab --reporter html --output output/coverage.html"
   },
   "author": "Lechuck Roh",
