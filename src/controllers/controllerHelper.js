@@ -73,6 +73,9 @@ const prepareCache = function (name, req, reply, model, where = {}) {
     const refresh = payload.refresh === 'true';
     const options = where;
 
+    // remove old caches
+    cacheManager.removeOldCaches();
+
     // use matching cache if available
     if (!refresh) {
         const cache = cacheManager.findByNameAndOption(name, options);
