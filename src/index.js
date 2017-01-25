@@ -14,7 +14,7 @@ sequelize.sync().then(() => {
 });
 
 // populate sample data
-require('./controllers/personnel.controller').populateSampleData();
+require('./controllers/personnel').populateSampleData();
 
 // Start HTTP server
 httpServer.start(err => {

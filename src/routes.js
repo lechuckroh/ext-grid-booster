@@ -1,6 +1,6 @@
 'use strict';
 
-const personnel = require('./controllers/personnel.controller');
+const personnel = require('./controllers/personnel');
 
 const routeDelete = function (server, path, handler, validate) {
     server.route({

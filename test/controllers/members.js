@@ -1,7 +1,8 @@
 'use strict';
 
-const models = require('../../src/models/index');
-const Helper = require('../../src/controllers/controllerHelper');
+const root = '../..';
+const models = require(`${root}/src/models/index`);
+const Helper = require(`${root}/src/controllers/controller_helper`);
 
 /** Find all members */
 exports.select = function (req, reply) {

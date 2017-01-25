@@ -4,7 +4,7 @@ const path = require('path');
 const Hapi = require('hapi');
 const Inert = require('inert');
 const config = require('./config');
-const CacheManager = require('./cache/cacheManager');
+const CacheManager = require('./cache/cache_manager');
 
 
 const getConfig = function (property) {

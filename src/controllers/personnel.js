@@ -2,7 +2,7 @@
 
 const config = require('../config');
 const models = require('../../src/models/index');
-const Helper = require('../../src/controllers/controllerHelper');
+const Helper = require('../../src/controllers/controller_helper');
 
 const logging = !!config['queryLogging'];
 

@@ -5,20 +5,22 @@ const lab = exports.lab = Lab.script();
 const Code = require('code');
 const expect = Code.expect;
 const fail = Code.fail;
-const config = require('../src/config');
-const server = require('../src/server').httpServer;
-const routes = require('../src/routes');
-const ModelHelper = require('../src/models/modelHelper');
-const TestHelper = require('./testHelper');
+
+const root = '../..';
+const config = require(`${root}/src/config`);
+const server = require(`${root}/src/server`).httpServer;
+const routes = require(`${root}/src/routes`);
+const ModelHelper = require(`${root}/src/models/model_helper`);
+const TestHelper = require(`${root}/test/test_helper`);
 
 // add models for test
-const models = require('../src/models/index');
-models.scanDir(__dirname + '/models');
+const models = require(`${root}/src/models/index`);
+models.scanDir(__dirname + '/../models');
 const Member = models.Member;
 const Team = models.Team;
 
 // register routes for test
-const members = require('./controllers/members.controller');
+const members = require(`${root}/test/controllers/members`);
 routes.routeGet(server, '/api/members', members.select);
 routes.routeGet(server, '/api/members/sqlite', members.selectNative);
 

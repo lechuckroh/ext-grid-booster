@@ -1,7 +1,7 @@
 'use strict';
 
 const _ = require('lodash');
-const toSnake = require('../util/StringUtils').camelCaseToSnakeCase;
+const toSnake = require('../util/string').camelCaseToSnakeCase;
 
 exports.STRING = function (DataTypes, fieldName, length, options) {
     const result = {

@@ -5,7 +5,7 @@ const lab = exports.lab = Lab.script();
 const Code = require('code');
 const expect = Code.expect;
 const Cache = require('../../src/cache/cache');
-const CacheManager = require('../../src/cache/cacheManager');
+const CacheManager = require('../../src/cache/cache_manager');
 
 lab.experiment("CacheManager", () => {
 
