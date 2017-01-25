@@ -11,8 +11,8 @@ lab.experiment("CacheManager", () => {
 
     lab.test("findById", done => {
         const cacheManager = new CacheManager();
-        const cache1 = new Cache(1, {}, []);
-        const cache2 = new Cache(2, {}, []);
+        const cache1 = new Cache('', 1, {}, []);
+        const cache2 = new Cache('', 2, {}, []);
 
         [cache1, cache2].forEach(cache => cacheManager.add(cache));
 
@@ -23,24 +23,27 @@ lab.experiment("CacheManager", () => {
         done();
     });
 
-    lab.test("findByOption", done => {
+    lab.test("findByNameAndOption", done => {
         const cacheManager = new CacheManager();
-        const cache1 = new Cache(1, {a: 1, b: 2}, []);
-        const cache2 = new Cache(2, {a: 1}, []);
+        const cache1 = new Cache('foo', 1, {a: 1, b: 2}, []);
+        const cache2 = new Cache('foo', 2, {a: 1}, []);
+        const cache3 = new Cache('bar', 2, {a: 1}, []);
 
-        [cache1, cache2].forEach(cache => cacheManager.add(cache));
+        [cache1, cache2, cache3].forEach(cache => cacheManager.add(cache));
 
-        expect(cacheManager.findByOption({b: 2, a: 1})).to.equal(cache1);
-        expect(cacheManager.findByOption({a: 1})).to.equal(cache2);
-        expect(cacheManager.findByOption({})).to.undefined();
+        expect(cacheManager.findByNameAndOption('foo', {b: 2, a: 1}))
+            .to.equal(cache1);
+        expect(cacheManager.findByNameAndOption('foo', {a: 1}))
+            .to.equal(cache2);
+        expect(cacheManager.findByNameAndOption({})).to.undefined();
 
         done();
     });
 
     lab.test("removeById", done => {
         const cacheManager = new CacheManager();
-        const cache1 = new Cache(1, {}, []);
-        const cache2 = new Cache(2, {}, []);
+        const cache1 = new Cache('', 1, {}, []);
+        const cache2 = new Cache('', 2, {}, []);
 
         [cache1, cache2].forEach(cache => cacheManager.add(cache));
 
@@ -53,8 +56,8 @@ lab.experiment("CacheManager", () => {
     lab.test("removeOldCaches", done => {
         const retentionMs = 1000 * 60;
         const cacheManager = new CacheManager(retentionMs);
-        const cache1 = new Cache(1, {}, []);
-        const cache2 = new Cache(2, {}, []);
+        const cache1 = new Cache('', 1, {}, []);
+        const cache2 = new Cache('', 2, {}, []);
 
         cache1._lastAccessTime = 0;
 

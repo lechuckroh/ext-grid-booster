@@ -25,7 +25,7 @@ lab.experiment("Cache", () => {
             phone: '111-333-2222',
             address: 'NewYork, US'
         }];
-        const cache = new Cache(1, {}, dataList);
+        const cache = new Cache('', 1, {}, dataList);
 
         // sort
         const sortOptions = [{

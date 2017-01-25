@@ -5,6 +5,7 @@ class CacheManager {
     constructor(retentionMs = 1000 * 60 * 60) {
         this._caches = {};
         this._retentionMs = retentionMs;
+        this._lastCacheId = 0;
     }
 
     size() {
@@ -27,9 +28,20 @@ class CacheManager {
         return this._caches[cacheId];
     }
 
-    findByOption(option) {
-        return Object.values(this._caches)
-            .find(cache => _.isEqual(cache.options, option));
+    findByNameAndOption(name, option) {
+        const caches = Object.values(this._caches)
+            .filter(cache => {
+                return cache.name === name && _.isEqual(cache.options, option);
+            });
+
+        const sorted = caches.sort(function(cache1, cache2) {
+                const t1 = cache1.createdAt;
+                const t2 = cache2.createdAt;
+                return t1 < t2 ? 1 : (t1 > t2 ? -1 : 0);
+            });
+
+        // select recent created cache
+        return sorted[0];
     }
 
     removeById(cacheId) {
@@ -47,6 +59,11 @@ class CacheManager {
         Object.values(this._caches)
             .filter(cache => now - cache.lastAccessTime > this._retentionMs)
             .forEach(cache => this.removeById(cache.cacheId));
+    }
+
+    createCacheId() {
+        this._lastCacheId = this._lastCacheId + 1;
+        return this._lastCacheId;
     }
 }
 

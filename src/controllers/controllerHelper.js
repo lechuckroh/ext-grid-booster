@@ -1,8 +1,12 @@
 'use strict';
 
+const _ = require('lodash');
+const os = require('os');
 const Boom = require('boom');
 const config = require('../config');
 const sequelize = require('../models/index').sequelize;
+const Cache = require('../cache/cache');
+const cacheManager = require('../server').cacheManager;
 
 const queryLogging = !!config['queryLogging'];
 
@@ -42,31 +46,119 @@ const replyError = function (reply, err) {
     reply(err);
 };
 
+
 const createJsonpScript = function (callback, total, data) {
     const jsonStr = toJson({total, data});
     return `${callback}(${jsonStr});`;
 };
 
+const toMB = value => (value / 1024 / 1024).toFixed(0);
+const toGB = value => (value / 1024 / 1024 / 1024).toFixed(2);
 
+const printMemory = function () {
+    const usage = process.memoryUsage();
+    const heapUsed = toMB(usage.heapUsed);
+    const heapTotal = toMB(usage.heapTotal);
+    const freeMem = toGB(os.freemem());
+    const totalMem = toGB(os.totalmem());
+    console.log(`Heap: ${heapUsed} / ${heapTotal} MB, Total: ${freeMem} / ${totalMem} GB`);
+};
+
+/**
+ * Select data from database using ORM model.
+ * The cacheId is returned after result data is stored in cache.
+ */
+const prepareCache = function (name, req, reply, model, where = {}) {
+    const payload = req.payload;
+    const refresh = payload.refresh === 'true';
+    const options = where;
+
+    // use matching cache if available
+    if (!refresh) {
+        const cache = cacheManager.findByNameAndOption(name, options);
+        if (cache) {
+            const cacheId = cache.cacheId;
+            replyOk(reply, {cacheId});
+            console.log(`Using old cache : ${cacheId}`);
+            return;
+        }
+    }
+
+    findAndCountAll(model, 0, 0, [], where)
+        .then(result => {
+            const cacheId = cacheManager.createCacheId();
+            const data = result.data;
+            const cache = new Cache(name, cacheId, options, data);
+            cacheManager.add(cache);
+            console.log(`New cache created : ${cacheId}`);
+
+            replyOk(reply, {cacheId});
+        })
+        .catch(err => replyError(reply, err));
+
+    printMemory();
+};
+
+
+/**
+ * Select data from database using ORM model.
+ */
 const select = function (req, reply, model, where = {}) {
     const query = req.query;
     const start = parseInt(query.start || '0');
     const limit = parseInt(query.limit || '100');
     const callback = query.callback || '';
     const sort = fromJson(query.sort || '[]');
+    const cacheId = query.cacheId;
 
-    model.findAndCountAll({
+    // Get data from cache
+    if (cacheId) {
+        const cache = cacheManager.findById(cacheId);
+        if (cache) {
+            // check sortOption change
+            if (sort.length > 0 && !_.isEqual(sort, cache.sortOptions)) {
+                cache.sort(sort);
+            }
+
+            const res = cache.getData(start, limit);
+            const script = createJsonpScript(callback, res.total, res.data);
+            replyOk(reply, script);
+        } else {
+            replyError(reply,
+                new Error(`Cache not found. cacheId: ${cacheId}`));
+        }
+    }
+    // Get data by SQL query
+    else {
+        findAndCountAll(model, start, limit, sort, where)
+            .then(result => {
+                const total = result.total;
+                const data = result.data;
+                const script = createJsonpScript(callback, total, data);
+                replyOk(reply, script);
+            })
+            .catch(err => replyError(reply, err));
+    }
+};
+
+const findAndCountAll = function (model, start, limit, sort, where = {}) {
+    const option = {
         where,
-        limit,
-        offset: start,
         order: sort.map(o => `${o.property} ${o.direction}`).join(','),
         logging: queryLogging
-    }).then(result => {
-        const script = createJsonpScript(callback,
-            result.count,
-            result.rows.map(row => row.dataValues));
-        replyOk(reply, script);
-    }).catch(err => replyError(reply, err));
+    };
+    if (limit > 0) {
+        option.limit = limit;
+        option.offset = start;
+    }
+
+    return model.findAndCountAll(option)
+        .then(result => {
+            return {
+                total: result.count,
+                data: result.rows.map(row => row.dataValues)
+            };
+        });
 };
 
 
@@ -173,6 +265,7 @@ exports.replyError = replyError;
 exports.createJsonpScript = createJsonpScript;
 exports.createOrderByQuery = createOrderByQuery;
 exports.createLimitQuery = createLimitQuery;
+exports.prepareCache = prepareCache;
 exports.select = select;
 exports.selectNative = selectNative;
 exports.getQueryBuilders = getQueryBuilders;

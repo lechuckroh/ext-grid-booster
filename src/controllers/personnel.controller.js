@@ -6,10 +6,17 @@ const Helper = require('../../src/controllers/controllerHelper');
 
 const logging = !!config['queryLogging'];
 
+/** Prepare cache using ORM model */
+exports.prepareCache = function (req, reply) {
+    Helper.prepareCache('personnel', req, reply, models.Personnel);
+};
+
+
 /** Find all using ORM model */
 exports.selectORM = function (req, reply) {
     Helper.select(req, reply, models.Personnel);
 };
+
 
 /** Find all using custom queryBuilders */
 exports.selectNative1 = function (req, reply) {
@@ -39,6 +46,7 @@ exports.selectNative2 = function (req, reply) {
 
     Helper.selectNative(req, reply, builders.select, builders.count);
 };
+
 
 // Populate sample data
 exports.populateSampleData = function () {

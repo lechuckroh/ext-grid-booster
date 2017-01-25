@@ -1,10 +1,18 @@
 class Cache {
-    constructor(cacheId, options, dataList) {
+    constructor(name, cacheId, options, dataList) {
+        const now = Date.now();
+
+        this._name = name;
         this._cacheId = cacheId;
         this._options = options;
-        this._dataList = dataList;
+        this._dataList = dataList || [];
         this._sortOptions = [];
-        this._lastAccessTime = Date.now();
+        this._lastAccessTime = now;
+        this._createdAt = now;
+    }
+
+    get name() {
+        return this._name;
     }
 
     get cacheId() {
@@ -25,6 +33,10 @@ class Cache {
 
     get lastAccessTime() {
         return this._lastAccessTime;
+    }
+
+    get createdAt() {
+        return this._createdAt;
     }
 
     clear() {
