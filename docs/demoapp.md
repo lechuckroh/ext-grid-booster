@@ -20,7 +20,7 @@ Ext.define('MyApp.store.Personnel', {
     fields: ['name', 'email', 'phone'],
 	proxy: {
 		type: 'jsonp',
-		url: 'http://localhost:9990/api/personnel',
+		url: '/api/personnel',
 		callbackKey: 'callback',
 		reader: {
 			rootProperty: 'data',
@@ -52,9 +52,27 @@ Ext.define('MyApp.view.main.List', {
         { text: 'Email', dataIndex: 'email', flex: 1 },
         { text: 'Phone', dataIndex: 'phone', flex: 1 }
     ],
-    listeners: {
-        select: 'onItemSelected'
-    }
+    initComponent: function() {
+        this.callParent();
+
+        var store = this.getStore();
+        Ext.Ajax.request({
+            url: '/api/personnel',
+            method: 'POST',
+            params: {
+                refresh: false
+            },
+            success: function(res) {
+                var cacheId = JSON.parse(res.responseText)['cacheId'];
+                var extraParams = store.proxy.extraParams;
+                extraParams.cacheId = cacheId;
+                store.load();
+            },
+            failure: function(res) {
+                console.error(res);
+            }
+        });
+    }   
 });
 ```
 
