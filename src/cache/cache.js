@@ -9,6 +9,7 @@ class Cache {
         this._sortOptions = [];
         this._lastAccessTime = now;
         this._createdAt = now;
+        this._dataList = dataList;
     }
 
     get name() {
@@ -25,6 +26,10 @@ class Cache {
 
     get dataList() {
         return this._dataList;
+    }
+
+    set dataList(value) {
+        this._dataList = value;
     }
 
     get sortOptions() {

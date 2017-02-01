@@ -70,6 +70,7 @@ const printMemory = function () {
  */
 const prepareCache = function (name, req, reply, model, where = {}) {
     const payload = req.payload;
+    const create = payload.create === 'true';
     const refresh = payload.refresh === 'true';
     const options = where;
 
@@ -77,12 +78,27 @@ const prepareCache = function (name, req, reply, model, where = {}) {
     cacheManager.removeOldCaches();
 
     // use matching cache if available
-    if (!refresh) {
+    if (!create) {
         const cache = cacheManager.findByNameAndOption(name, options);
         if (cache) {
             const cacheId = cache.cacheId;
-            replyOk(reply, {cacheId});
-            console.log(`Using old cache : ${cacheId}`);
+
+            // Refresh cache content
+            if (refresh) {
+                findAndCountAll(model, 0, 0, [], where)
+                    .then(result => {
+                        cache.dataList = result.data;
+                        console.log(`Cache refreshed : ${cacheId}`);
+
+                        replyOk(reply, {cacheId});
+                    })
+                    .catch(err => replyError(reply, err));
+            }
+            // Use cache
+            else {
+                replyOk(reply, {cacheId});
+                console.log(`Using cache : ${cacheId}`);
+            }
             return;
         }
     }
@@ -93,7 +109,7 @@ const prepareCache = function (name, req, reply, model, where = {}) {
             const data = result.data;
             const cache = new Cache(name, cacheId, options, data);
             cacheManager.add(cache);
-            console.log(`New cache created : ${cacheId}`);
+            console.log(`Cache created : ${cacheId}`);
 
             replyOk(reply, {cacheId});
         })
