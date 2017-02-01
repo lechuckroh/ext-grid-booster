@@ -1,15 +1,36 @@
 const _ = require('lodash');
 
+let instance = null;
+
 class CacheManager {
 
-    constructor(retentionMs = 1000 * 60 * 60) {
+    constructor(retentionMs = 1000 * 60 * 30) {
         this._caches = {};
         this._retentionMs = retentionMs;
         this._lastCacheId = 0;
     }
 
+    static instance() {
+        if (!instance) {
+            instance = new CacheManager();
+        }
+        return instance;
+    }
+
+    get retentionMs() {
+        return this._retentionMs;
+    }
+
+    set retentionMs(value) {
+        this._retentionMs = value;
+    }
+
     size() {
         return Object.keys(this._caches).length;
+    }
+
+    clear() {
+        this._caches = {};
     }
 
     add(cache) {
@@ -35,10 +56,10 @@ class CacheManager {
             });
 
         const sorted = caches.sort(function(cache1, cache2) {
-                const t1 = cache1.createdAt;
-                const t2 = cache2.createdAt;
-                return t1 < t2 ? 1 : (t1 > t2 ? -1 : 0);
-            });
+            const t1 = cache1.createdAt;
+            const t2 = cache2.createdAt;
+            return t1 < t2 ? 1 : (t1 > t2 ? -1 : 0);
+        });
 
         // select recent created cache
         return sorted[0];

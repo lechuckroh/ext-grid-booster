@@ -6,7 +6,7 @@ const Boom = require('boom');
 const config = require('../config');
 const sequelize = require('../models/index').sequelize;
 const Cache = require('../cache/cache');
-const cacheManager = require('../server').cacheManager;
+const cacheManager = require('../cache/cache_manager').instance();
 
 const queryLogging = !!config['queryLogging'];
 

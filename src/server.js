@@ -4,7 +4,6 @@ const path = require('path');
 const Hapi = require('hapi');
 const Inert = require('inert');
 const config = require('./config');
-const CacheManager = require('./cache/cache_manager');
 
 
 const getConfig = function (property) {
@@ -31,11 +30,6 @@ const getPort = function () {
     const port = getConfig('port');
     return port ? port : 9990;
 };
-
-
-// CacheManager
-const cacheManager = new CacheManager();
-exports.cacheManager = cacheManager;
 
 
 // Http Server
@@ -74,4 +68,4 @@ httpServer.route({
 const routes = require('./routes');
 routes.register(httpServer);
 
-exports.httpServer = httpServer;
+module.exports = httpServer;

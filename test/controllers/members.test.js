@@ -8,7 +8,7 @@ const fail = Code.fail;
 
 const root = '../..';
 const config = require(`${root}/src/config`);
-const server = require(`${root}/src/server`).httpServer;
+const server = require(`${root}/src/server`);
 const routes = require(`${root}/src/routes`);
 const ModelHelper = require(`${root}/src/models/model_helper`);
 const TestHelper = require(`${root}/test/test_helper`);
