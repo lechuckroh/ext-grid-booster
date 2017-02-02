@@ -42,7 +42,10 @@ const scanDir = function (dir, excludes = []) {
     });
 };
 
-scanDir(__dirname, ['model_helper.js']);
+const excludes = [
+    'model_helper.js'
+];
+scanDir(__dirname, excludes);
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;

@@ -60,6 +60,7 @@ Ext.define('MyApp.view.main.List', {
             url: '/api/personnel',
             method: 'POST',
             params: {
+                create: false,
                 refresh: false
             },
             success: function(res) {
@@ -87,7 +88,7 @@ $ sencha app build
 Run server in the root directory.
 
 ```bash
-$ yarn start
+$ npm start
 ```
 
 Open `http://localhost:9990/myapp`.

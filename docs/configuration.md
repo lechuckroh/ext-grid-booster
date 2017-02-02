@@ -21,7 +21,7 @@ This profile is used for testing. You don't have to set it manually because it i
 To run test:
 
 ```bash
-$ yarn test
+$ npm test
 ```
 
 #### production
@@ -31,13 +31,13 @@ To use this profile, you have to set `NODE_ENV` environment variable to `product
 
 On Unix:
 ```bash
-$ NODE_ENV=production yarn start
+$ NODE_ENV=production npm start
 ```
 
 On Windows:
 ```bash
 $ set NODE_ENV=production
-$ yarn start
+$ npm start
 ```
 
 ## Default settings

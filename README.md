@@ -13,25 +13,21 @@ This project is inspired by [ExtSpeeder](http://www.extspeeder.com/) (which prov
 
 ## Requirements
 * node.js v7.0+
-* [yarn](https://yarnpkg.com/) (Optional)
-
-All the command lines are based on `yarn`.
-If you have not installed `yarn`, you can use `npm` instead.
 
 ## Commands
 
 ```bash
 # install modules
-$ yarn install
+$ npm install
 
 # run test
-$ yarm test
+$ npm test
 
 # generate coverage report to 'output/coverage.html'
-$ yarn htmlcov
+$ npm htmlcov
 
 # start server
-$ yarn start
+$ npm start
 ```
 
 ## Configuration
