@@ -1,4 +1,5 @@
 # Customization
+[[한국어](customization_ko.md)]
 
 The application has a sample model named `Personnel` for demonstration.
 

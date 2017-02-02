@@ -1,5 +1,7 @@
 # Configuration
 
+[[한국어](configuration_ko.md)]
+
 `config/config.json` file stores the configuration.
 
 By default, the `config/config.json` file does not exist.

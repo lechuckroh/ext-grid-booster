@@ -1,18 +1,18 @@
-# Demo Application
-[[한국어](demoapp_ko.md)]
+# 데모 애플리케이션
+[[English](demoapp.md)]
 
-You can generate a working demonstration by following these steps.
+작동하는 데모용 애플리케이션을 생성하려면 다음과 같은 단계를 따릅니다.
 
-We assume that ExtJS SDK is located in `~/ext-6.2.1`. Change it to match your path.
+ExtJS SDK 는 `~/ext-6.2.1` 디렉토리에 있다고 가정하며, 자신의 환경에 맞게 경로를 변경해서 사용합니다.
 
-## app generation
+## 애플리케이션 생성
 ```bash
 $ cd htdocs
 $ sencha -sdk ~/ext-6.2.1 generate app -classic MyApp myapp
 ```
 
-## Edit store to use `BufferedStore`
-Open `htdocs/myapp/app/store/Personnel.js` and replace with the following code.
+## `BufferedStore`를 사용하도록 Store 변경
+`htdocs/myapp/app/store/Personnel.js` 파일을 열어서 다음과 같이 코드를 변경합니다.
 
 ```javascript
 Ext.define('MyApp.store.Personnel', {
@@ -33,9 +33,9 @@ Ext.define('MyApp.store.Personnel', {
 });
 ```
 
-## Edit view
-1. Open `htdocs/myapp/app/view/main/List.js`.
-2. Add `height` configuration.
+## view 수정
+1. `htdocs/myapp/app/view/main/List.js` 파일을 엽니다.
+2. `height` 설정을 추가합니다.
 
 ```javascript
 Ext.define('MyApp.view.main.List', {
@@ -48,7 +48,7 @@ Ext.define('MyApp.view.main.List', {
     store: {
         type: 'personnel'
     },
-	height: 600,          // <== add this line
+	height: 600,          // <== 이 부분 추가
     columns: [
         { text: 'Name',  dataIndex: 'name' },
         { text: 'Email', dataIndex: 'email', flex: 1 },
@@ -75,22 +75,22 @@ Ext.define('MyApp.view.main.List', {
                 console.error(res);
             }
         });
-    }   
+    }
 });
 ```
 
-## Build and Run
-Build sencha application
+## 빌드 및 실행
+애플리케이션을 빌드합니다.
 
 ```bash
 $ cd htdocs/myapp
 $ sencha app build
 ```
 
-Run server in the root directory.
+프로젝트의 루트 디렉토리에서 서버를 구동합니다.
 
 ```bash
 $ npm start
 ```
 
-Open `http://localhost:9990/myapp`.
+웹 브라우저에서 `http://localhost:9990/myapp` 주소로 접속합니다.

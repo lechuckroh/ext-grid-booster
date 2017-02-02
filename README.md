@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/lechuckroh/ext-grid-booster.svg?branch=master)](https://travis-ci.org/lechuckroh/ext-grid-booster)
 
+[[한국어](README_ko.md)]
+
 ExtJS Grid booster for huge dataset.
 
 This project is inspired by [ExtSpeeder](http://www.extspeeder.com/) (which provides full features including source code generation).
@@ -34,7 +36,7 @@ $ npm start
 1. Copy `config/config.sample.json` to `config/config.json` file.
 2. Edit `config/config.json` file
 
-See [Customization](docs/customization.md) for more details.
+See [Configuration](docs/configuration.md) for more details.
 
 ## References
 * [Lab](https://github.com/hapijs/lab) : Node Test Utility
