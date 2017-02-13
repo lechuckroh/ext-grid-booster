@@ -37,6 +37,18 @@ $ npm start
 
 좀 더 자세한 내용은 [설정](docs/configuration_ko.md) 항목을 참고합니다.
 
+## Docker
+```bash
+# 이미지 생성
+$ docker build -t ext-grid-booster:1.0 .
+
+# 이미지 실행
+$ docker run -d -p 9990:9990 ext-grid-booster:1.0
+
+# 컨테이너 로그 출력
+$ docker logs --follow {컨테이너 해쉬}
+```
+
 ## 참고문서
 * [Lab](https://github.com/hapijs/lab) : Node.js 테스트 라이브러리
 * [Joi](https://github.com/hapijs/joi) : HTTP 요청 파라미터 정합성 확인
