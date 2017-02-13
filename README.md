@@ -38,6 +38,18 @@ $ npm start
 
 See [Configuration](docs/configuration.md) for more details.
 
+## Docker
+```bash
+# create image
+$ docker build -t ext-grid-booster:1.0 .
+
+# run image
+$ docker run -d -p 9990:9990 ext-grid-booster:1.0
+
+# container log
+$ docker logs --follow {CONTAINER_HASH}
+```
+
 ## References
 * [Lab](https://github.com/hapijs/lab) : Node Test Utility
 * [Joi](https://github.com/hapijs/joi) : Object Schema Validation

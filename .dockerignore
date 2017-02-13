@@ -1,0 +1,12 @@
+.idea
+config/config.json
+docs
+node_modules
+test
+.dockerignore
+.gitignore
+.travis.yml
+Dockerfile
+LICENSE
+*.md
+yarn.lock
