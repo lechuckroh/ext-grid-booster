@@ -1,0 +1,17 @@
+machine:
+  node:
+    version: 7.5.0
+
+general:
+  branches:
+    only:
+      - master
+      - develop
+  artifacts:
+    - "config"
+    - "htdocs"
+    - "src"
+    - "Dockerfile"
+    - "package.json"
+    - "README_ko.md"
+    - "README.md"
