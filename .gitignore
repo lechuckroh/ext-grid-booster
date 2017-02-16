@@ -1,6 +1,7 @@
 /.idea/dictionaries
 /.idea/libraries/Generated_files.xml
 /.idea/workspace.xml
+/.sencha
 /config/config.json
 /dist
 /htdocs/myapp
